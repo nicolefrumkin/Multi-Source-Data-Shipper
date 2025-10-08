@@ -130,6 +130,25 @@ def fetch_weather_api(city, config):
                 continue
             raise
 
+def read_csv_file(csv_file, logs):
+    with open(csv_file, newline="", encoding="latin1") as f:
+        reader = csv.DictReader(f, delimiter=",")
+        for row in reader:
+            city = row["city"]
+            temperature_celsius = float(row["temperature"])
+            description = row["description"].strip('"')
+            source_provider = "csv file"
+            normalized_file_data = {
+                "city": city,
+                "temperature_celsius": temperature_celsius,
+                "description": description,
+                "source_provider": source_provider
+            }
+            logs.append(normalized_file_data)
+
+def to_ndjson(logs):
+    return "\n".join(json.dumps(log) for log in logs) + "\n"
+
 def main():
     config = Config.load()
     count = 1
@@ -138,20 +157,7 @@ def main():
         logs = []
 
         if config.source_type == "FILE":
-            with open(config.csv_file, newline="", encoding="latin1") as f:
-                reader = csv.DictReader(f, delimiter=",")
-                for row in reader:
-                    city = row["city"]
-                    temperature_celsius = float(row["temperature"])
-                    description = row["description"].strip('"')
-                    source_provider = "csv file"
-                    normalized_file_data = {
-                        "city": city,
-                        "temperature_celsius": temperature_celsius,
-                        "description": description,
-                        "source_provider": source_provider
-                    }
-                    logs.append(normalized_file_data)
+            read_csv_file(config.csv_file, logs)
 
         if config.source_type == "OPEN_WEATHER":
             for city in config.cities:
@@ -165,9 +171,7 @@ def main():
                 normalized_weather_api = normalize_weather_api(raw_weather_api)
                 logs.append(normalized_weather_api)
         
-        batch_logs = "\n".join(json.dumps(log) for log in logs) + "\n"
-
-        send_to_logz_io(batch_logs, config)
+        send_to_logz_io(to_ndjson(logs), config)
 
         print("Polling", count, "sent to Logz.io successfully")
         count += 1
