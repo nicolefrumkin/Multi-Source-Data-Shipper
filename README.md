@@ -1,17 +1,20 @@
-# README File
-## install dependencies:
+# Multi-Source-Data-Shipper
+## Install dependencies:
 ```powershell
 pip install python-dotenv
 pip install requests
 pip install pytest
 ```
 
-## to run:
-main code:
+## Configure 
+Edit the variables in .env file
+
+## How to run:
+Main code:
 ```powershell
 python main.py
 ```
-unit tests:
+Unit tests:
 ```powershell
 pytest -q
 ```
