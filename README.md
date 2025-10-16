@@ -4,6 +4,7 @@
 pip install python-dotenv
 pip install requests
 pip install pytest
+pip install aiohttp python-dotenv
 ```
 
 ## Configure 
