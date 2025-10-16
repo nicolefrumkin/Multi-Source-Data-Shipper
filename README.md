@@ -1,23 +1,37 @@
 # Multi-Source-Data-Shipper
-## Install dependencies:
-```powershell
-pip install python-dotenv
-pip install requests
-pip install pytest
-pip install aiohttp python-dotenv
+
+Fetch weather from CSV/OpenWeather/WeatherAPI for many cities and ship logs to Logz.io.
+
+## Install
+
+```bash
+pip install aiohttp python-dotenv requests pytest
 ```
 
-## Configure 
-Edit the variables in .env file
+## Setup
 
-## How to run:
-Main code:
-```powershell
+Create a `.env` file (edit values):
+
+```env
+SOURCE_TYPES=FILE,OPEN_WEATHER,WEATHER_API
+CSV_FILE=weather.csv
+CITIES=Berlin,Sydney
+OPEN_WEATHER_API_KEY=your_key
+WEATHER_API_KEY=your_key
+LOGZ_LISTENER=listener.logz.io
+LOGZ_TOKEN=your_token
+POLLING_INTERVAL=60
+CONCURRENCY=20
+```
+
+## Run
+
+```bash
 python main.py
 ```
-Unit tests:
-```powershell
+
+## Test (data transforms)
+
+```bash
 pytest -q
 ```
-
-
