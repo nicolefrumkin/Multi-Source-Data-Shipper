@@ -5,7 +5,7 @@ Fetch weather from CSV/OpenWeather/WeatherAPI for many cities and ship logs to L
 ## Install
 
 ```bash
-pip install aiohttp python-dotenv requests pytest
+pip install python-dotenv requests pytest aiohttp python-dotenv
 ```
 
 ## Setup
